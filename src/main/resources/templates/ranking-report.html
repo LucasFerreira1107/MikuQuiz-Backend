@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Relatório de Ranking</title>
+    <style>
+        body { font-family: 'Helvetica', sans-serif; }
+        .header { text-align: center; border-bottom: 2px solid #00c8b3; padding-bottom: 10px; margin-bottom: 25px; }
+        .header h1 { color: #008a7c; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #00c8b3; color: white; text-align: center; }
+        tr.gold { background-color: #fff7d6; }
+        tr.silver { background-color: #f5f5f5; }
+        tr.bronze { background-color: #fff0e6; }
+        .pos, .score { text-align: center; width: 15%; }
+        .name { width: 70%; }
+        .medal { font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Miku Quiz - Ranking Global Top 30</h1>
+        <p th:text="'Gerado em: ' + ${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm')}"></p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="pos">Posição</th>
+                <th class="name">Jogador</th>
+                <th class="score">Pontuação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${ranking}" th:classappend="${entry.position() == 1 ? 'gold' : (entry.position() == 2 ? 'silver' : (entry.position() == 3 ? 'bronze' : ''))}">
+                <td class="pos">
+                    <span th:if="${entry.position() == 1}" class="medal">🥇</span>
+                    <span th:if="${entry.position() == 2}" class="medal">🥈</span>
+                    <span th:if="${entry.position() == 3}" class="medal">🥉</span>
+                    <span th:text="${entry.position()} + 'º'"></span>
+                </td>
+                <td class="name" th:text="${entry.userName()}">Nome do Jogador</td>
+                <td class="score" th:text="${#numbers.formatInteger(entry.score(), 0, 'POINT')}">150,000</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

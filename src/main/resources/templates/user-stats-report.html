@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Relatório de Desempenho</title>
+    <style>
+        body { font-family: 'Helvetica', sans-serif; color: #333; }
+        .header { text-align: center; border-bottom: 2px solid #00c8b3; padding-bottom: 10px; margin-bottom: 25px; }
+        .header h1 { color: #008a7c; margin: 0; font-size: 24px; }
+        .profile-card { border: 1px solid #e0f5f3; border-radius: 8px; padding: 20px; background-color: #f7fdfc; }
+        .profile-header { display: block; text-align: center; margin-bottom: 20px; }
+        .username { font-size: 22px; font-weight: bold; color: #005a4f; margin: 0; }
+        .email { font-size: 14px; color: #555; }
+        .bio { font-style: italic; color: #666; text-align: center; margin: 10px 0; }
+        .stats-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .stats-table td { padding: 12px; border: 1px solid #ddd; }
+        .stats-table .label { font-weight: bold; color: #008a7c; width: 50%; }
+        .stats-table .value { text-align: right; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Miku Quiz - Relatório de Desempenho</h1>
+        <p th:text="'Gerado em: ' + ${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm')}"></p>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-header">
+            <h2 class="username" th:text="${user.name()}">Nome do Utilizador</h2>
+            <p class="email" th:text="${user.email()}">email@exemplo.com</p>
+            <p class="bio" th:if="${user.bio() != null and !user.bio().isEmpty()}" th:text="'&quot;' + ${user.bio()} + '&quot;'">"Bio do utilizador aqui"</p>
+        </div>
+
+        <table class="stats-table">
+            <tr>
+                <td class="label">Pontos Totais</td>
+                <td class="value" th:text="${#numbers.formatInteger(user.totalPoints(), 0, 'POINT')}">10,500</td>
+            </tr>
+            <tr>
+                <td class="label">Nível</td>
+                <td class="value" th:text="${user.level()}">5</td>
+            </tr>
+            <tr>
+                <td class="label">Experiência</td>
+                <td class="value" th:text="${user.experience()} + ' XP'">150 / 500 XP</td>
+            </tr>
+            <tr>
+                <td class="label">Quizzes Jogados</td>
+                <td class="value" th:text="${user.quizzesPlayed()}">25</td>
+            </tr>
+            <tr>
+                <td class="label">Quizzes Criados</td>
+                <td class="value" th:text="${user.quizzesCreated()}">3</td>
+            </tr>
+            <tr>
+                <td class="label">Precisão Média</td>
+                <td class="value" th:text="${#numbers.formatDecimal(user.accuracyPercent(), 1, 2)} + '%'">92.50%</td>
+            </tr>
+            <tr>
+                <td class="label">Melhor Sequência</td>
+                <td class="value" th:text="${user.maxStreak()}">12</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
